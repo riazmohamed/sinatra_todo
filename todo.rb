@@ -22,6 +22,10 @@ get "/lists" do
 end
 
 get "/lists/new" do
-  session[:lists] << { name: "New List", todos: [] }
+  erb :new_list, layout: :layout
+end
+
+post "/lists" do
+  session[:lists] << { name: params[:list_name], todos: [] }
   redirect "/lists"
 end
