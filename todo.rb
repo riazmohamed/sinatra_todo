@@ -49,3 +49,7 @@ post "/lists" do
     redirect "/lists"
   end
 end
+
+get "/lists/:id" do
+  params[:id]
+end
