@@ -80,3 +80,11 @@ post "/lists/:id" do
     redirect "/lists/#{id}"
   end
 end
+
+# Delete the todo list
+post "/lists/:id/destroy" do
+  id = params[:id].to_i
+  session[:lists].delete_at id
+
+  redirect "/lists"
+end
