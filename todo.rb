@@ -120,7 +120,7 @@ end
 # Edit an existing todo-list
 get "/lists/:id/edit" do
   id = params[:id].to_i
-  @list = session[:lists][id]
+  @list = load_list(id)
   erb :edit_list, layout: :layout
 end
 
@@ -128,7 +128,7 @@ end
 post "/lists/:id" do
   list_name = params[:list_name].strip
   id = params[:id].to_i
-  @list = session[:lists][id]
+  @list = load_list(id)
 
   error = error_for_list_name(list_name)
   if error
@@ -152,7 +152,7 @@ end
 # Adding a new todo to a list
 post "/lists/:list_id/todos" do
   @list_id = params[:list_id].to_i
-  @list = session[:lists][@list_id]
+  @list = load_list(@list_id)
   text = params[:todo].strip
 
   error = error_for_todo(text)
@@ -169,7 +169,7 @@ end
 # Delete a todo from a list
  post "/lists/:list_id/todos/:id/destroy" do
    @list_id = params[:list_id].to_i
-   @list = session[:lists][@list_id]
+   @list = load_list(@list_id)
 
    todo_id = params[:id].to_i
    @list[:todos].delete_at todo_id
@@ -180,7 +180,7 @@ end
  # Update the status of a todo
  post "/lists/:list_id/todos/:id" do
    @list_id = params[:list_id].to_i
-   @list = session[:lists][@list_id]
+   @list = load_list(@list_id)
 
    todo_id = params[:id].to_i
    is_completed = params[:completed] == "true"
@@ -193,7 +193,7 @@ end
  # Mark all todos that is complete for a list
  post "/lists/:id/complete_all" do
    @list_id = params[:id].to_i
-   @list = session[:lists][@list_id]
+   @list = load_list(@list_id)
 
    @list[:todos].each do |todo|
      todo[:completed] = true
