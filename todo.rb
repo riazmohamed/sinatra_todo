@@ -85,6 +85,16 @@ def error_for_todo(name)
   end
 end
 
+# Return an error when accessing an element at invalid index
+def load_list(index)
+  list = session[:lists][index] if index && session[:lists][index]
+  return list if list
+
+  session[:error] = "The specified list was not found."
+  redirect "/lists"
+end
+
+
 # create a new list
 post "/lists" do
   list_name = params[:list_name].strip
@@ -100,9 +110,10 @@ post "/lists" do
   end
 end
 
+# View a single todo list
 get "/lists/:id" do
   @list_id = params[:id].to_i
-  @list = session[:lists][@list_id]
+  @list = load_list(@list_id)
   erb :list, layout: :layout
 end
 
