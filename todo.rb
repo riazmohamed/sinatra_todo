@@ -152,8 +152,8 @@ post "/lists/:id/destroy" do
   end
 end
 
-def next_todo_id(todos)
-  max = todos.map { |todo| todo[:id] }.max || 0
+def next_element_id(elements)
+  max = elements.map { |element| element[:id] }.max || 0
   max + 1
 end
 
@@ -168,7 +168,7 @@ post "/lists/:list_id/todos" do
     session[:error] = error
     erb :list, layout: :layout
   else
-    id = next_todo_id(@list[:todos])
+    id = next_element_id(@list[:todos])
     @list[:todos] << {id: id, name: text, completed: false}
     session[:success] = "The todo was added."
     redirect "/lists/#{@list_id}"
